@@ -83,15 +83,15 @@ public class Lists {
                 break;
             case 4:
                 CircularDoubleLinkedList<Integer> miListaCD = new CircularDoubleLinkedList<>();
-                miListaCD.add(11);
-                miListaCD.add(33);
-                miListaCD.add(22);
-                miListaCD.add(55);
-                miListaCD.add(55); 
-                miListaCD.add(88);
-                miListaCD.add(77);               
-                miListaCD.add(99);
-                System.out.println("Listas Circular Doble: " + miListaCD.showData());
+                miListaCD.addOrdered(33);
+                miListaCD.addOrdered(11);
+                miListaCD.addOrdered(22);
+                miListaCD.addOrdered(55);
+                miListaCD.addOrdered(55); 
+                miListaCD.addOrdered(99);
+                miListaCD.addOrdered(66);               
+                miListaCD.addOrdered(88);
+                System.out.println("Listas Circular Doble Ordenada: " + miListaCD.showData());
                 miListaCD.delete();
                 System.out.println("Listas Circular Doble Primer Dato Eliminado: "+ miListaCD.showData());
                 miListaCD.deleteLast();

@@ -9,7 +9,7 @@ package lists;
  *
  * @author samaniw
  */
-public class CircularDoubleLinkedList<T> implements Ilist<T> {
+public class CircularDoubleLinkedList<T extends Number & Comparable> implements Ilist<T> {
 
     DoubleNode<T> head;
 
@@ -21,6 +21,22 @@ public class CircularDoubleLinkedList<T> implements Ilist<T> {
     public boolean isEmpty() {
         return head == null;
     }
+    
+    private DoubleNode<T> addNode(T d) {
+        DoubleNode<T> newNode = new DoubleNode<>(d);
+        if (isEmpty()) {
+            head = newNode;
+            newNode.setNextNode(newNode);
+            newNode.setPreviousNode(newNode);
+        } else {
+            newNode.setPreviousNode(head.getPreviousNode());
+            newNode.setNextNode(head);
+            head.getPreviousNode().setNextNode(newNode);
+            head.setPreviousNode(newNode);
+        }
+        return newNode;
+    }   
+    
     
     private boolean exist(T d) {
 
@@ -37,33 +53,36 @@ public class CircularDoubleLinkedList<T> implements Ilist<T> {
 
     @Override
     public void add(T d) {
-        DoubleNode<T> newNode= new DoubleNode<>(d);
-        if(isEmpty()){
-            head= newNode;
-            newNode.setNextNode(newNode);
-            newNode.setPreviousNode(newNode);
-        }else{
-            newNode.setPreviousNode(head.getPreviousNode());
-            newNode.setNextNode(head);
-            head.getPreviousNode().setNextNode(newNode);
-            head.setPreviousNode(newNode);
-            head=newNode;
-            
-        }
+        head = addNode(d);
     }
+    
 
     @Override
     public void addLast(T d) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        addNode(d);
     }
 
     @Override
-    public void addOrdered(T d) {
-       //Agregar datos ordenados sin repetir valor
-       //(si el dato ya se encuentra en la lista, no ingresarlo y mostrar advertencia).}
-       //Eso No Me Funciono :(
+    public void addOrdered(T d){
+        if (isEmpty() || head.getData().compareTo(d) > 0) {
+            add(d);
+        } else {
+            if (exist(d)) {
+                System.out.println("El dato ya existe");
+            }else if(head.getPreviousNode().getData().compareTo(d) < 0){
+                addLast(d);   
+            }else {
+                DoubleNode<T> current = head;
+                while (current.getData().compareTo(d) < 0) {
+                    current = current.getNextNode();
+                }
+                DoubleNode<T> anterior = current.getPreviousNode();
+                DoubleNode<T> newNode = new DoubleNode<>(anterior, d, current);
+                anterior.setNextNode(newNode);
+                current.setPreviousNode(newNode);
+            }
+        }
     }
-
     @Override
     public void delete() {
         //Eliminar el primer dato.
@@ -118,4 +137,6 @@ public class CircularDoubleLinkedList<T> implements Ilist<T> {
             return data += tail.getData();
         }
     }
+    
+
 }
